@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/croesnick/ansible-discover.svg?branch=master)](https://travis-ci.org/croesnick/ansible-discover)
+
 # ansible-discover
 
 _ansible-discover_ is a command line tool to list dependencies and dependants of [Ansible] roles and playbooks, respectively.
