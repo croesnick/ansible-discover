@@ -1,9 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from setuptools import find_packages, setup
+
+with open('README.rst') as file:
+    long_description = file.read()
 
 setup(
     name='ansible-discover',
     version='0.0.1',
     description='Discover both dependants and dependencies of Ansible playbooks and roles, respectively',
+    long_description=long_description,
     keywords=['ansible', 'testing', 'ci'],
     author='Carsten Rösnick-Neugebauer',
     author_email='croesnick@gmail.com',
