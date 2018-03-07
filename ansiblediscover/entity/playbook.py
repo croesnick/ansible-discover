@@ -1,6 +1,7 @@
 import logging
-import yaml
 from typing import Iterable, Set, Union
+
+from ansiblediscover.utils.fs import FS
 
 logger = logging.getLogger(__name__)
 
@@ -11,10 +12,11 @@ class Playbook:
 
     @staticmethod
     def from_file(path: str) -> 'Playbook':
-        with open(path) as fh:
-            raw_content = fh.read()
-            yaml_content = yaml.load(raw_content)
-            return Playbook(yaml_content)
+        try:
+            content = FS.load_yaml(path)
+            return Playbook(content) if content is not None else None
+        except (TypeError, FileNotFoundError) as e:
+            raise RuntimeError(e)
 
     @staticmethod
     def role_from_play(role_in_play: Union[str, dict]) -> str:
