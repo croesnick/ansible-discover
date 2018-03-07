@@ -1,4 +1,4 @@
-|Build Status|
+|Build Status| |PyPi Package|
 
 ansible-discover
 ================
@@ -69,3 +69,5 @@ Contributing
 
 .. |Build Status| image:: https://travis-ci.org/croesnick/ansible-discover.svg?branch=master
    :target: https://travis-ci.org/croesnick/ansible-discover
+.. |PyPi Package| image:: https://badge.fury.io/py/ansible-discover.svg
+   :target: https://badge.fury.io/py/ansible-discover
