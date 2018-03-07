@@ -11,7 +11,7 @@ class Meta:
         self.content = content
 
     @staticmethod
-    def path_main(role_path: str):
+    def main_path(role_path: str):
         return os.path.join(role_path, 'meta', 'main.yml')
 
     def dependencies(self) -> List[str]:

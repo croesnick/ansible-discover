@@ -27,4 +27,4 @@ def test_dependencies(content, expected_dependencies):
 
 def test_path_main():
     role_path = os.path.join('path', 'to', 'my', 'role')
-    assert os.path.join(role_path, 'meta', 'main.yml') == Meta.path_main(role_path)
+    assert os.path.join(role_path, 'meta', 'main.yml') == Meta.main_path(role_path)
