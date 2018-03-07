@@ -29,6 +29,7 @@ setup(
     install_requires=[
         'PyYAML>=3.12',
         'click>=6.7',
+        'ruamel.yaml>=0.15.35',
     ],
     python_requires='~=3.6',
     tests_require=[

@@ -1,6 +1,6 @@
 import logging
 import os
-import yaml
+from ruamel import yaml
 from typing import Optional, Union
 
 logger = logging.getLogger(__name__)
@@ -15,6 +15,6 @@ class FS:
         with open(path) as fh:
             raw_content = fh.read()
             try:
-                return yaml.load(raw_content)
+                return yaml.safe_load(raw_content)
             except (yaml.scanner.ScannerError, yaml.parser.ParserError) as e:
                 raise TypeError('Failed to parse yaml file: {}. Details: {}'.format(path, str(e)))

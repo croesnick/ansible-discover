@@ -1,5 +1,5 @@
 import os
-import yaml
+from ruamel import yaml
 
 import pytest
 
