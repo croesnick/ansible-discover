@@ -3,18 +3,21 @@
 
 from setuptools import find_packages, setup
 
-with open('README.rst') as file:
+version='0.0.1'
+
+with open('README.rst', encoding='utf-8') as file:
     long_description = file.read()
 
 setup(
     name='ansible-discover',
-    version='0.0.1',
+    version=version,
     description='Discover both dependants and dependencies of Ansible playbooks and roles, respectively',
     long_description=long_description,
     keywords=['ansible', 'testing', 'ci'],
     author='Carsten Rösnick-Neugebauer',
     author_email='croesnick@gmail.com',
     url='https://github.com/croesnickn/ansible-discover',
+    download_url='https://github.com/croesnick/ansible-discover/archive/v{}.tar.gz'.format(version),
     license='MIT',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
@@ -23,6 +26,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Testing',
         'Topic :: Utilities',
     ],
