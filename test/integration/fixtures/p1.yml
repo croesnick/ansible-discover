@@ -1,0 +1,14 @@
+---
+- name: Provision p2
+  import_playbook: p2.yml
+
+- hosts: all
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - include: t0.yml
+    - name: t1
+      include_tasks: t1.yml
+    - name: t2
+      import_tasks: t2.yml

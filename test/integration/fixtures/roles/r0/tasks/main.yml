@@ -1,0 +1,9 @@
+---
+- name: include_tasks t0
+  include_tasks: t0.yml
+
+- name: import_task t1
+  include_tasks: t1.yml
+
+- name: include t2
+  include: t2.yml

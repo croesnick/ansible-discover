@@ -1,0 +1,5 @@
+---
+- debug:
+    msg: t2 tasks
+
+- include_role: r6

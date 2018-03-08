@@ -36,7 +36,7 @@ def _configure_logger(do_log: bool, log_level: str):
 
 def _print_successors(entities: List[str], limit: str, for_type: str, succ_fun: Callable[[Node], Set[Node]]):
     if len(entities) == 0:
-        logger.info('No entity files given, thus nothing to do. Bye!')
+        logger.info('No files given, thus nothing to do. Bye!')
         return
 
     dependency_map = Dependencies.discover()
