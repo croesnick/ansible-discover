@@ -37,7 +37,7 @@ class Role:
             return Meta(content, role_path) if content is not None else None
         except TypeError as e:
             logger.warning(str(e))
-        except FileNotFoundError:
+        except OSError:
             pass
 
     @staticmethod

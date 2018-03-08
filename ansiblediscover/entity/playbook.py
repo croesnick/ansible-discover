@@ -15,7 +15,7 @@ class Playbook:
         try:
             content = FS.load_yaml(path)
             return Playbook(content) if content is not None else None
-        except (TypeError, FileNotFoundError) as e:
+        except (TypeError, OSError) as e:
             raise RuntimeError(e)
 
     @staticmethod

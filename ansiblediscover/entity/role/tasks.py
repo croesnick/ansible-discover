@@ -45,7 +45,7 @@ class Tasks:
     def build_task(task_path: str) -> List[dict]:
         try:
             content = FS.load_yaml(task_path)
-        except (TypeError, FileNotFoundError) as e:
+        except (TypeError, OSError) as e:
             raise RuntimeError('role task {}: load/parse failure. Details: {}'.format(task_path, str(e)))
         else:
             if content is None:
