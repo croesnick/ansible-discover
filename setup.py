@@ -3,7 +3,7 @@
 
 from setuptools import find_packages, setup
 
-version='0.0.1'
+version = '0.0.1'
 
 with open('README.rst', encoding='utf-8') as file:
     long_description = file.read()
@@ -40,6 +40,7 @@ setup(
         'pytest>=3.2.3',
         'pytest-cov>=2.5.1',
         'pytest-mock>=1.6.3',
+        'coverage>=4.5.1',
     ],
     packages=find_packages(exclude=['test']),
     entry_points={

@@ -11,9 +11,6 @@ logger = logging.getLogger(__name__)
 
 
 class Role:
-    TASK_INCLUDE_STATEMENTS = ['include', 'include_tasks', 'import', 'import_tasks']
-    ROLE_INCLUDE_STATEMENTS = ['include_role', 'import_role']
-
     def __init__(self, tasks: Optional['Tasks'], meta: Optional['Meta'], role_path: str):
         self.tasks = tasks
         self.meta = meta
@@ -48,13 +45,10 @@ class Role:
             logger.warning('role {}: skipping role due to loading/parsing error. Details: {}'.format(role_path, str(e)))
 
     @staticmethod
-    def is_valid_role_filename(role: str) -> bool:
-        return role.endswith('.yml')
-
-    @staticmethod
-    def file_to_role_name(filename: str) -> str:
-        logger.debug('Converting file to role name: {}'.format(filename))
-        return re.search('^(.+)(\.yml)?$', filename).group(1)
+    def normalize_role_name(name: str) -> str:
+        if name.endswith('.yml'):
+            return re.search('^(.+)\.yml$', name).group(1)
+        return name
 
     def dependencies(self) -> List[str]:
         dependencies = []
@@ -63,4 +57,4 @@ class Role:
         if self.meta is not None:
             dependencies += self.meta.dependencies()
 
-        return list(set(Role.file_to_role_name(dependency) for dependency in dependencies))
+        return list(set(Role.normalize_role_name(dependency) for dependency in dependencies))

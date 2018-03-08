@@ -30,7 +30,7 @@ class Dependencies:
                 name = re.search('^(.+)\.yml$', playbook).group(1)
 
                 playbook_node = Node(name, 'playbook', playbook)
-                logger.debug('Adding playbook to dependency map: {}'.format(name,))
+                logger.debug('Adding playbook to dependency map: {}'.format(name))
                 dependency_map[playbook_node.identifier()] = playbook_node
 
                 roles = model.roles_from_plays()
