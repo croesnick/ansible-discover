@@ -31,16 +31,16 @@ setup(
         'Topic :: Utilities',
     ],
     install_requires=[
-        'PyYAML>=3.12',
-        'click>=6.7',
-        'ruamel.yaml>=0.15.35',
+        'PyYAML~=3.12',
+        'click~=6.7',
+        'ruamel.yaml~=0.15',
     ],
     python_requires='~=3.6',
     tests_require=[
-        'pytest>=3.2.3',
-        'pytest-cov>=2.5.1',
-        'pytest-mock>=1.6.3',
-        'coverage>=4.5.1',
+        'pytest~=3.4',
+        'pytest-cov~=2.5',
+        'pytest-mock~=1.7',
+        'coverage~=4.5',
     ],
     packages=find_packages(exclude=['test']),
     entry_points={

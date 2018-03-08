@@ -1,4 +1,5 @@
 import pytest
+
 from ansiblediscover.entity.role import Role
 
 
@@ -27,16 +28,4 @@ def test_dependencies(mocker):
 
     role = Role(mock_tasks, mock_meta, 'roles/sample')
 
-    assert task_dependencies + meta_dependencies == role.dependencies()
-
-
-@pytest.mark.parametrize('tasks, include_statements, expected_includes', [
-    ([], [], set()),
-    ([{'include': 'good1.yml'}], [], set()),
-    ([{'include': 'good1.yml'}], ['include'], {'good1.yml'}),
-    ([{'include': 'good1.yml'}, {'import': 'ignored1.yml'}], ['include'], {'good1.yml'}),
-    ([{'include': 'good1.yml'}, {'import': 'good2.yml'}], ['include', 'import'], {'good1.yml', 'good2.yml'}),
-])
-def test_extract_task_includes(tasks, include_statements, expected_includes):
-    assert True
-#    assert Role.task_includes(tasks, include_statements) == expected_includes
+    assert sorted(task_dependencies + meta_dependencies) == sorted(role.dependencies())
