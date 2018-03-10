@@ -30,8 +30,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Dependency traversal for task includes in roles
 
 [Unreleased]: https://github.com/croesnick/ansible-discover/compare/v0.0.2...HEAD
-[0.0.2]: https://github.com/croesnick/ansible-discover/compare/v0.0.2...v0.0.1
-[0.0.1]: https://github.com/croesnick/ansible-discover/compare/v0.0.1...4b825dc642cb6eb9a060e54bf8d69288fbee4904
+[0.0.2]: https://github.com/croesnick/ansible-discover/compare/v0.0.1...v0.0.2
+[0.0.1]: https://github.com/croesnick/ansible-discover/compare/v0.0.1
 
 [PyYAML]: https://pypi.python.org/pypi/PyYAML
 [ruamel.yaml]: https://pypi.python.org/pypi/ruamel.yaml
