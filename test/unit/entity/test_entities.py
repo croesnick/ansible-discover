@@ -29,7 +29,14 @@ def test_from_path_success(tmpdir, path, expectation):
 def test_from_path_failure(tmpdir, path):
     if len(path.strip()) == 0:
         tmpdir.ensure(path, dir=True)
+        full_path = path
     else:
         tmpdir.ensure(path, file=True)
+        full_path = os.path.join(tmpdir, path)
+
     with pytest.raises(ValueError):
-        Entities.from_path(os.path.join(tmpdir, path), curdir=tmpdir)
+        Entities.from_path(full_path, curdir=tmpdir)
+
+
+def test_from_paths():
+    pass

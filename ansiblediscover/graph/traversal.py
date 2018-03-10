@@ -7,9 +7,6 @@ logger = logging.getLogger(__name__)
 
 
 class Traversal:
-    def __init__(self):
-        pass
-
     @staticmethod
     def direct(nodes: Set[Node], succ: Callable[[Node], Set[Node]]):
         return set(successor for node in nodes for successor in succ(node))

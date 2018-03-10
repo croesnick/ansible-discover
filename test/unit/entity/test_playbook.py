@@ -1,10 +1,43 @@
 import pytest
+import stat
+from ruamel import yaml
+
 from ansiblediscover.entity.playbook import Playbook
+
+
+def test_build_success(tmpdir):
+    content = [{'hosts': 'all', 'remote_user': 'root', 'roles': []}]
+
+    playbook_file = tmpdir.join('playbook.yml')
+    playbook_file.write(yaml.dump(content))
+
+    assert content == Playbook.build(str(playbook_file)).content
+
+
+def test_build_fails_on_invalid_yaml(tmpdir):
+    content = 'certainly: not: yaml'
+
+    playbook_file = tmpdir.join('playbook.yml')
+    playbook_file.write(content)
+
+    with pytest.raises(RuntimeError):
+        Playbook.build(str(playbook_file))
+
+
+def test_build_fails_on_nonreadable_yaml(tmpdir):
+    content = [{'hosts': 'all'}]
+
+    playbook_file = tmpdir.join('playbook.yml')
+    playbook_file.write(yaml.dump(content))
+    playbook_file.chmod(stat.S_IWUSR)
+
+    with pytest.raises(RuntimeError):
+        Playbook.build(str(playbook_file))
 
 
 def test_initialize_contents():
     contents = ['foo', 'bar']
-    assert Playbook(contents).contents == contents
+    assert Playbook(contents).content == contents
 
 
 @pytest.mark.parametrize('contents, expected_roles', [

@@ -7,11 +7,11 @@ logger = logging.getLogger(__name__)
 
 
 class Playbook:
-    def __init__(self, contents: list):
-        self.contents = contents
+    def __init__(self, content: list):
+        self.content = content
 
     @staticmethod
-    def from_file(path: str) -> 'Playbook':
+    def build(path: str) -> 'Playbook':
         try:
             content = FS.load_yaml(path)
             return Playbook(content) if content is not None else None
@@ -34,7 +34,7 @@ class Playbook:
         return set(list(self._roles_from_plays()))
 
     def _roles_from_plays(self) -> Iterable[str]:
-        for play in self.contents:
+        for play in self.content:
             for role in play.get('roles', []):
                 try:
                     name = Playbook.role_from_play(role)
@@ -44,5 +44,3 @@ class Playbook:
                     pass
 
         return
-        yield
-

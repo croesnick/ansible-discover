@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.0.1] - 2018-03-??
+## [0.0.2] - 2018-03-08
 
-[Unreleased]: https://github.com/croesnick/andible-discover/compare/v0.0.1...HEAD
+### Added
+
+- Also parse `meta/` in roles for dependencies
+
+### Changed
+
+- Switch from [PyYAML] to [ruamel.yaml] for parsing YAML files
+- Improve logging
+
+### Fixed
+
+- Properly handle exceptions, prevent them to bubble up to the user
+
+## [0.0.1] - 2018-03-06
+
+### Added
+
+- CLI with basic functionality for gathering dependencies and dependants for roles
+- Dependency traversal for task includes in roles
+
+[Unreleased]: https://github.com/croesnick/ansible-discover/compare/v0.0.2...HEAD
+[0.0.2]: https://github.com/croesnick/ansible-discover/compare/v0.0.2...v0.0.1
+[0.0.1]: https://github.com/croesnick/ansible-discover/compare/v0.0.1...4b825dc642cb6eb9a060e54bf8d69288fbee4904
+
+[PyYAML]: https://pypi.python.org/pypi/PyYAML
+[ruamel.yaml]: https://pypi.python.org/pypi/ruamel.yaml

@@ -22,7 +22,7 @@ class Dependencies:
 
         for playbook in playbooks:
             try:
-                model = Playbook.from_file(playbook)
+                model = Playbook.build(playbook)
             except RuntimeError as e:
                 logger.warning(str(e))
                 continue

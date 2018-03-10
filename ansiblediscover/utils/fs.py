@@ -13,12 +13,8 @@ class FS:
             raise OSError('File does not exist: {}'.format(path))
 
         with open(path) as fh:
+            raw_content = fh.read()
             try:
-                raw_content = fh.read()
-            except PermissionError:
-                raise OSError('File not accessible/readable: {}'.format(path))
-            else:
-                try:
-                    return yaml.safe_load(raw_content)
-                except (yaml.scanner.ScannerError, yaml.parser.ParserError) as e:
-                    raise TypeError('Invalid yaml file: {}. Details: {}'.format(path, str(e)))
+                return yaml.safe_load(raw_content)
+            except (yaml.scanner.ScannerError, yaml.parser.ParserError) as e:
+                raise TypeError('Invalid yaml file: {}. Details: {}'.format(path, str(e)))

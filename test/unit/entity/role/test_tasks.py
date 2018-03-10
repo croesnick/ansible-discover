@@ -64,6 +64,13 @@ def test_build_task_with_list(tmpdir):
     assert content == Tasks.build_task(str(task_file))
 
 
+def test_build_task_content_none(tmpdir):
+    task_file = tmpdir.join("mytask.yml")
+    task_file.write(yaml.dump(None))
+
+    assert [] == Tasks.build_task(str(task_file))
+
+
 def test_build_task_file_not_found(tmpdir):
     task_file = tmpdir.join("mytask.yml")
     with pytest.raises(RuntimeError):
