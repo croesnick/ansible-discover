@@ -35,12 +35,16 @@ def test_build_fails_on_nonreadable_yaml(tmpdir):
         Playbook.build(str(playbook_file))
 
 
-def test_initialize_contents():
-    contents = ['foo', 'bar']
-    assert Playbook(contents).content == contents
+def test_initialize_content():
+    content = ['foo', 'bar']
+    path = 'myplaybook.yml'
+
+    assert content == Playbook(content, path).content
+    assert path == Playbook(content, path).path
+    assert 'myplaybook' == Playbook(content, path).name()
 
 
-@pytest.mark.parametrize('contents, expected_roles', [
+@pytest.mark.parametrize('content, expected_roles', [
     ([], set()),
     ([{'roles': []}], set()),
     ([{'roles': ['good11']}], {'good11'}),
@@ -53,6 +57,28 @@ def test_initialize_contents():
     ([{'roles': [{'name': 'bad21'}, 'good11']}], {'good11'}),
     ([{'roles': [{'name': 'bad21'}, {'role': 'good21'}]}], {'good21'}),
 ])
-def test_extract_role_names(contents, expected_roles):
-    model = Playbook(contents)
+def test_extract_role_names(content, expected_roles):
+    model = Playbook(content, 'irrelevant_path')
     assert model.roles_from_plays() == expected_roles
+
+
+@pytest.mark.parametrize('content, expected_dependencies', [
+    ([], []),
+    ([{'include': 'good.yml'}], ['good.yml']),
+    ([{'include': 'bad'}], []),
+    ([{'include': None}], []),
+    ([{'include': []}], []),
+    ([{'include': 'good.yml'}, {'roles': ['irrelevant']}], ['good.yml']),
+    ([{'import_playbook': 'good.yml'}], ['good.yml']),
+    ([{'import_playbook': 'bad'}], []),
+    ([{'import_playbook': None}], []),
+    ([{'import_playbook': []}], []),
+    ([{'import_playbook': 'good.yml'}, {'roles': ['irrelevant']}], ['good.yml']),
+])
+def test_playbook_dependencies(content, expected_dependencies):
+    model = Playbook(content, 'irrelevant_path')
+    assert expected_dependencies == model.playbook_dependencies()
+
+
+def test_extract_name():
+    assert 'myplaybook' == Playbook.extract_name('myplaybook.yml')

@@ -19,24 +19,36 @@ class Dependencies:
 
         files = os.listdir('.')
         playbooks = [file for file in files if fnmatch(file, '*.yml')]
+        playbook_models = []
 
         for playbook in playbooks:
             try:
                 model = Playbook.build(playbook)
+                playbook_models.append(model)
             except RuntimeError as e:
                 logger.warning(str(e))
-                continue
             else:
-                name = re.search('^(.+)\.yml$', playbook).group(1)
+                name = model.name()
+                node = Node(name, 'playbook', model.path)
 
-                playbook_node = Node(name, 'playbook', playbook)
                 logger.debug('Adding playbook to dependency map: {}'.format(name))
-                dependency_map[playbook_node.identifier()] = playbook_node
+                dependency_map[node.identifier()] = node
 
-                roles = model.roles_from_plays()
+        for playbook in playbook_models:
+            playbook_node = dependency_map[Node.build_identifier(playbook.name(), 'playbook')]
 
-                for role in roles:
-                    Dependencies.dive_into_role_and_relate(role, playbook_node, dependency_map)
+            for include in playbook.playbook_dependencies():
+                include_name = Playbook.extract_name(include)
+                include_identifier = Node.build_identifier(include_name, 'playbook')
+                if include_identifier not in dependency_map:
+                    logger.warning('Playbook {} imports non-existing playbook {}. Ignoring import.'.format(playbook.name(), include_name))
+                    continue
+
+                include_node = dependency_map[include_identifier]
+                playbook_node.add_successor(include_node)
+
+            for role in playbook.roles_from_plays():
+                Dependencies.dive_into_role_and_relate(role, playbook_node, dependency_map)
 
         return dependency_map
 
