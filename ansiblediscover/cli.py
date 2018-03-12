@@ -41,20 +41,24 @@ def _print_successors(entities: List[str], limit: str, for_type: str, succ_fun: 
 
     dependency_map = Dependencies.discover()
 
+    for node in dependency_map.values():
+        logger.debug('{} --> {}'.format(node, [str(s) for s in node.successors]))
+
+    # Determine types of given entities from the paths they are living in
     # {'playbook': [...], 'role': [...]}
     types_n_entities = Entities.from_paths(entities)
     # ['playbook:playbook1', ..., 'role:role1', ...]
     entity_identifiers = [Node.build_identifier(entity_name, entity_type)
                           for (entity_type, entity_list) in types_n_entities.items()
                           for entity_name in entity_list]
-    filtered_entities = [dependency_map[identifier]
-                         for identifier in entity_identifiers if identifier in dependency_map]
+    filtered_entities = {dependency_map[identifier]
+                         for identifier in entity_identifiers if identifier in dependency_map}
 
     collector_func = getattr(Traversal, limit)
     successors = collector_func(filtered_entities, succ_fun)
 
     for succ in successors:
-        if succ.node_type == for_type:
+        if succ.typestring == for_type:
             print(succ.name)
 
 

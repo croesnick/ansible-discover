@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from ansiblediscover.entity.role.meta import Meta
+from ansiblediscover.entity.role import Meta
 
 
 @pytest.mark.parametrize('content, expected_dependencies', [
@@ -25,9 +25,9 @@ from ansiblediscover.entity.role.meta import Meta
 ])
 def test_dependencies(content, expected_dependencies):
     meta = Meta(content, 'irrelevant_path')
-    assert expected_dependencies == meta.dependencies()
+    assert sorted(expected_dependencies) == sorted(d.name for d in meta.dependencies())
 
 
 def test_path_main():
-    role_path = os.path.join('path', 'to', 'my', 'role')
-    assert os.path.join(role_path, 'meta', 'main.yml') == Meta.main_path(role_path)
+    path = os.path.join('path', 'to', 'my', 'role')
+    assert os.path.join(path, 'meta', 'main.yml') == Meta.main_path(path)

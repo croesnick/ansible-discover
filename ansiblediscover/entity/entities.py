@@ -1,14 +1,14 @@
 import logging
 import os
 import re
-from typing import Dict, List, Tuple
+from typing import Dict, List, Iterable, Tuple
 
 logger = logging.getLogger(__name__)
 
 
 class Entities:
     @staticmethod
-    def from_paths(paths: List[str]) -> Dict[str, List[str]]:
+    def from_paths(paths: Iterable[str]) -> Dict[str, List[str]]:
         entities = {'playbook': [], 'role': []}
 
         for path in paths:
@@ -31,7 +31,9 @@ class Entities:
             file_name = os.path.basename(path)
             name_search = re.search('^(.+)\.yml$', file_name)
             if name_search is None or len(name_search.groups()) == 0:
-                raise ValueError('File path indicated a playbook, but filename does not path pattern ^.+\.yml$ for: {}'.format(file_name,))
+                raise ValueError(
+                    'File path indicated a playbook, but filename does not path pattern ^.+\.yml$ for: {}'.format(
+                        file_name, ))
             return 'playbook', name_search.group(1)
 
         file_path_parts = path_rel_to_curdir.split(os.sep)

@@ -1,8 +1,13 @@
 import logging
+import os
 import re
-from typing import Any, Dict, Iterable, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Union
 
 from ansiblediscover.utils.fs import FS
+from ansiblediscover.entity import EntityFactoryABC
+from ansiblediscover.entity.play import Play
+from ansiblediscover.entity.role import RoleFactory
+from ansiblediscover.entity.tasklist import TasklistFactory
 
 logger = logging.getLogger(__name__)
 
@@ -26,19 +31,13 @@ class Playbook:
     def extract_name(path: str) -> str:
         return re.search('^(.+)\.yml$', path).group(1)
 
-    @staticmethod
-    def role_from_play(role_in_play: Union[str, dict]) -> str:
-        # TODO Handle Ansible's "=" syntax if that's allowed here
-        if type(role_in_play) is str:
-            return role_in_play
-        if type(role_in_play) is dict:
-            name = role_in_play.get('role', None)
-            if name is not None:
-                return name
+    def name(self) -> str:
+        return Playbook.extract_name(self.path)
 
-        raise ValueError('Role usage in play does not properly reference a role: {}'.format(role_in_play))
+    def dependencies(self) -> List['EntityFactoryABC']:
+        return self.playbook_dependencies() + self.play_dependencies()
 
-    def playbook_dependencies(self) -> List[str]:
+    def playbook_dependencies(self) -> List['PlaybookFactory']:
         def first_matching_import(play: Dict[str, Any], keys: List[str]) -> Optional[str]:
             for key in keys:
                 if key in play:
@@ -59,22 +58,98 @@ class Playbook:
 
             dependencies.add(dependency)
 
-        return sorted(list(dependencies))
+        return [PlaybookFactory(path) for path in dependencies]
 
-    def name(self) -> str:
-        return Playbook.extract_name(self.path)
+    def play_dependencies(self) -> List[Union[RoleFactory, TasklistFactory]]:
+        dependencies = []
 
-    def roles_from_plays(self) -> Set:
-        return set(list(self._roles_from_plays()))
-
-    def _roles_from_plays(self) -> Iterable[str]:
         for play in self.content:
-            for role in play.get('roles', []):
-                try:
-                    name = Playbook.role_from_play(role)
-                    yield name
-                except ValueError as e:
-                    logger.warning(str(e))
-                    pass
+            play_model = Play.build(play)
+            dependencies += play_model.dependencies
 
-        return
+        return dependencies
+
+
+class PlaybookFactory:
+    def __init__(self, path: str):
+        self._path = path
+        self._name = None
+
+    def is_valid(self) -> bool:
+        return all(attrib is not None for attrib in [self.path, self.name])
+
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def name(self) -> str:
+        if self._name is None:
+            match = re.match('^(.+)\.yml$', os.path.basename(self.path))
+            self._name = match.group(1) if match is not None else None
+        return self._name
+
+    @property
+    def typestring(self) -> str:
+        return 'playbook'
+
+    def build(self) -> Optional['Playbook']:
+        try:
+            return Playbook.build(self.path)
+        except RuntimeError as e:
+            logger.warning(str(e))
+
+
+class PlaybookOrTasklistFactory:
+    def __init__(self, path: str):
+        self.path = path
+        self._data = None
+        self._typestring = None
+        self._name = None
+
+    def is_valid(self) -> bool:
+        return all(attrib is not None for attrib in [self.path, self.name, self.typestring])
+
+    @property
+    def name(self) -> str:
+        if self._name is None:
+            matches = re.match('^(.+)\.yml$', os.path.basename(self.path))
+            if matches is not None:
+                self._name = matches.group(1)
+        return self._name
+
+    # TODO Should return None if file is of bad format
+    @property
+    def typestring(self) -> Optional[str]:
+        if self._typestring is None:
+            self._typestring = 'tasklist'
+
+            for play in self.data:
+                if any(stmt in play for stmt in
+                       ['hosts', 'pre_tasks', 'tasks', 'post_tasks', 'roles'] + Playbook.PLAYBOOK_IMPORT_STATEMENTS):
+                    self._typestring = 'playbook'
+                    break
+
+        return self._typestring
+
+    @property
+    def data(self) -> List[dict]:
+        if self._data is None:
+            try:
+                self._data = FS.load_yaml(self.path)
+                if self._data is None:
+                    self._data = []
+            except (TypeError, OSError) as e:
+                logger.warning(str(e))
+                self._data = []
+
+        return self._data
+
+    # TODO Support tasklist includes/imports on playbook level
+    def build(self) -> Optional['Playbook']:
+        if self.typestring == 'playbook':
+            try:
+                return Playbook.build(self.path)
+            except RuntimeError as e:
+                # TODO Currently dead branch as `typestring` through `data` catches read/parse errors
+                logger.warning(str(e))

@@ -1,5 +1,6 @@
-import pytest
 import stat
+
+import pytest
 from ruamel import yaml
 
 from ansiblediscover.entity.playbook import Playbook
@@ -44,22 +45,13 @@ def test_initialize_content():
     assert 'myplaybook' == Playbook(content, path).name()
 
 
-@pytest.mark.parametrize('content, expected_roles', [
-    ([], set()),
-    ([{'roles': []}], set()),
-    ([{'roles': ['good11']}], {'good11'}),
-    ([{'roles': ['good11', 'good12']}], {'good11', 'good12'}),
-    ([{'roles': [{'role': 'good21'}]}], {'good21'}),
-    ([{'roles': [{'role': 'good21'}, {'role': 'good22'}]}], {'good21', 'good22'}),
-    ([{'roles': [{'role': 'good21'}, 'good11']}], {'good11', 'good21'}),
-    ([{'roles': [{'name': 'bad21'}]}], set()),
-    ([{'roles': [[], {}]}], set()),
-    ([{'roles': [{'name': 'bad21'}, 'good11']}], {'good11'}),
-    ([{'roles': [{'name': 'bad21'}, {'role': 'good21'}]}], {'good21'}),
+@pytest.mark.parametrize('content, expected_dependencies', [
+    ([], []),
+    ([{'roles': ['good11', {'role': 'good12'}]}], ['roles/good11', 'roles/good12']),
 ])
-def test_extract_role_names(content, expected_roles):
+def test_dependencies(content, expected_dependencies):
     model = Playbook(content, 'irrelevant_path')
-    assert model.roles_from_plays() == expected_roles
+    assert expected_dependencies == sorted(d.path for d in model.dependencies())
 
 
 @pytest.mark.parametrize('content, expected_dependencies', [
@@ -77,7 +69,31 @@ def test_extract_role_names(content, expected_roles):
 ])
 def test_playbook_dependencies(content, expected_dependencies):
     model = Playbook(content, 'irrelevant_path')
-    assert expected_dependencies == model.playbook_dependencies()
+    assert expected_dependencies == sorted(d.path for d in model.playbook_dependencies())
+
+
+@pytest.mark.parametrize('content, expected_dependencies', [
+    ([], set()),
+    ([{'roles': []}], set()),
+    ([{'roles': ['good11']}], {'roles/good11'}),
+    ([{'roles': ['good11', 'good12']}], {'roles/good11', 'roles/good12'}),
+    ([{'roles': [{'role': 'good21'}]}], {'roles/good21'}),
+    ([{'roles': [{'role': 'good21'}, {'role': 'good22'}]}], {'roles/good21', 'roles/good22'}),
+    ([{'roles': [{'role': 'good21'}, 'good11']}], {'roles/good11', 'roles/good21'}),
+    ([{'roles': [{'name': 'bad21'}]}], set()),
+    ([{'roles': [[], {}]}], set()),
+    ([{'roles': [{'name': 'bad21'}, 'good11']}], {'roles/good11'}),
+    ([{'roles': [{'name': 'bad21'}, {'role': 'good21'}]}], {'roles/good21'}),
+    ([{'pre_tasks': []}], set()),
+    ([{'pre_tasks': [{'debug': {'msg': 1}}]}], set()),
+    ([{'tasks': []}], set()),
+    ([{'tasks': [{'debug': {'msg': 1}}]}], set()),
+    ([{'post_tasks': []}], set()),
+    ([{'post_tasks': [{'debug': {'msg': 1}}]}], set()),
+])
+def test_play_dependencies(content, expected_dependencies):
+    model = Playbook(content, 'irrelevant_path')
+    assert expected_dependencies == {d.path for d in model.play_dependencies()}
 
 
 def test_extract_name():

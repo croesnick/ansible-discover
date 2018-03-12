@@ -1,7 +1,8 @@
 import logging
 import os
-from ruamel import yaml
 from typing import Optional, Union
+
+from ruamel import yaml
 
 logger = logging.getLogger(__name__)
 
