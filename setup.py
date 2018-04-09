@@ -16,7 +16,7 @@ setup(
     keywords=['ansible', 'testing', 'ci'],
     author='Carsten Rösnick-Neugebauer',
     author_email='croesnick@gmail.com',
-    url='https://github.com/croesnickn/ansible-discover',
+    url='https://github.com/croesnick/ansible-discover',
     download_url='https://github.com/croesnick/ansible-discover/archive/v{}.tar.gz'.format(version),
     license='MIT',
     classifiers=[
