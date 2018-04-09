@@ -22,7 +22,8 @@ from ansiblediscover.cli import cli
     ('roles', 'predecessors', ['roles/r6'], ['r0', 'r2']),
 ])
 def test_cli_role_successors(pb_or_role, succ_or_pred, files, expected_output):
-    fixtures_path = os.path.abspath(os.path.join(os.curdir, 'integration', 'fixtures'))
+    current_dir = os.path.dirname(__file__)
+    fixtures_path = os.path.abspath(os.path.join(current_dir, 'fixtures'))
 
     runner = CliRunner()
 
