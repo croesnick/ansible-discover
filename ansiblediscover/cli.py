@@ -88,5 +88,24 @@ def roles_successors(entities: List[str], limit: str):
     _print_successors(entities, limit, 'role', (lambda n: n.predecessors))
 
 
+@cli.group('playbooks')
+def playbooks():
+    pass
+
+
+@playbooks.command('successors')
+@click.argument('entities', type=click.Path(exists=True), nargs=-1)
+@click.option('--limit', '-l', type=click.Choice(['direct', 'leafs', 'all']), default='all')
+def playbooks_successors(entities: List[str], limit: str):
+    _print_successors(entities, limit, 'playbook', (lambda n: n.successors))
+
+
+@playbooks.command('predecessors')
+@click.argument('entities', type=click.Path(exists=True), nargs=-1)
+@click.option('--limit', '-l', type=click.Choice(['direct', 'leafs', 'all']), default='all')
+def playbooks_successors(entities: List[str], limit: str):
+    _print_successors(entities, limit, 'playbook', (lambda n: n.predecessors))
+
+
 if __name__ == '__main__':
     cli()
