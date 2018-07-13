@@ -1,4 +1,5 @@
 import logging
+import shlex
 import sys
 from typing import Callable, List, Set
 
@@ -62,6 +63,18 @@ def _print_successors(entities: List[str], limit: str, for_type: str, succ_fun: 
             print(succ.name)
 
 
+def split_shell_arguments(shparams):
+    return shlex.split(shparams)
+
+
+def read_entities_from_stdin(_ctx, _param, value):
+    if not value and not click.get_text_stream('stdin').isatty():
+        data = click.get_text_stream('stdin').read()
+        return split_shell_arguments(data)
+    else:
+        return value
+
+
 @click.group()
 @click.option('--log/--no-log', default=False)
 @click.option('--log-level', type=click.Choice(LOG_LEVEL_MAP.keys()), default='info')
@@ -75,14 +88,14 @@ def roles():
 
 
 @roles.command('successors')
-@click.argument('entities', type=click.Path(exists=True), nargs=-1)
+@click.argument('entities', type=click.Path(exists=True), callback=read_entities_from_stdin, nargs=-1)
 @click.option('--limit', '-l', type=click.Choice(['direct', 'leafs', 'all']), default='all')
 def roles_successors(entities: List[str], limit: str):
     _print_successors(entities, limit, 'role', (lambda n: n.successors))
 
 
 @roles.command('predecessors')
-@click.argument('entities', type=click.Path(exists=True), nargs=-1)
+@click.argument('entities', type=click.Path(exists=True), callback=read_entities_from_stdin, nargs=-1)
 @click.option('--limit', '-l', type=click.Choice(['direct', 'leafs', 'all']), default='all')
 def roles_successors(entities: List[str], limit: str):
     _print_successors(entities, limit, 'role', (lambda n: n.predecessors))
