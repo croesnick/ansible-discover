@@ -7,7 +7,7 @@ from ansiblediscover.utils.fs import FS
 from ansiblediscover.entity import EntityFactoryABC
 from ansiblediscover.entity.play import Play
 from ansiblediscover.entity.role import RoleFactory
-from ansiblediscover.entity.tasklist import TasklistFactory
+from ansiblediscover.entity.tasklist import Tasklist, TasklistFactory
 
 logger = logging.getLogger(__name__)
 
@@ -145,11 +145,13 @@ class PlaybookOrTasklistFactory:
 
         return self._data
 
-    # TODO Support tasklist includes/imports on playbook level
-    def build(self) -> Optional['Playbook']:
+    def build(self) -> Optional[Union['Playbook', 'Tasklist']]:
         if self.typestring == 'playbook':
             try:
                 return Playbook.build(self.path)
             except RuntimeError as e:
                 # TODO Currently dead branch as `typestring` through `data` catches read/parse errors
                 logger.warning(str(e))
+
+        if self.typestring == 'tasklist':
+            return Tasklist.build(self.path)

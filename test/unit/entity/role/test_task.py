@@ -1,6 +1,7 @@
 import pytest
 
-from ansiblediscover.entity.role import RoleFactory, Task
+from ansiblediscover.entity.role import RoleFactory
+from ansiblediscover.entity.task import Task
 
 
 @pytest.mark.parametrize('task, expected', [

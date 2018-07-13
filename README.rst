@@ -4,7 +4,7 @@ ansible-discover
 ================
 
 *ansible-discover* is a command line tool to list dependencies and
-dependants of `Ansible`_ roles and playbooks, respectively.
+dependants of `Ansible` roles and playbooks, respectively.
 
 One of its prime uses is in a CI tool like Jenkins. Once a change on,
 say a role, is committed, use *ansible-discover* to gather the dependant
