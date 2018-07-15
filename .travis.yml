@@ -18,7 +18,4 @@ jobs:
     - stage: test
       script:
         - make test-readme
-        - make ci
-    - stage: coverage
-      python: 3.6
-      script: codecov
+        - make test
