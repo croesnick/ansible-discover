@@ -11,6 +11,10 @@ env:
 
 install: "make"
 
+script:
+  - make test-readme
+  - make ci
+
 cache: pip
 
 jobs:
@@ -19,3 +23,6 @@ jobs:
       script:
         - make test-readme
         - make test
+    - stage: coverage
+      python: 3.6
+      script: codecov
