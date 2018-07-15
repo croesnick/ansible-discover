@@ -31,22 +31,21 @@ setup(
         'Topic :: Utilities',
     ],
     install_requires=[
-        'PyYAML~=3.12',
-        'click~=6.7',
-        'ruamel.yaml~=0.15',
+        'click',
+        'ruamel.yaml',
     ],
-    python_requires='~=3.6',
-    tests_require=[
-        'pytest~=3.4',
-        'pytest-cov~=2.5',
-        'pytest-mock~=1.7',
-        'coverage~=4.5',
-    ],
+    python_requires='>=3.6',
     packages=find_packages(exclude=['test']),
     entry_points={
         'console_scripts': [
             'ansible-discover=ansiblediscover.cli:cli',
         ]
     },
+    tests_require=[
+        'pytest',
+        'pytest-cov',
+        'pytest-mock',
+        'coverage',
+    ],
     test_suite="test",
 )

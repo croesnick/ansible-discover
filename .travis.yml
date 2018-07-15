@@ -2,13 +2,23 @@
 language: python
 python:
   - "3.6"
+  - "3.7-dev"
 
-before_install:
-  - pip install setuptools
+env:
+  global:
+    - PIPENV_VENV_IN_PROJECT=1
+    - PIPENV_IGNORE_VIRTUALENVS=1
 
-install:
-  - python setup.py develop
-  - pip install -r dev-requirements.txt
+install: "make"
 
-script:
-  - pytest
+cache: pip
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - make test-readme
+        - make ci
+    - stage: coverage
+      python: 3.6
+      script: codecov

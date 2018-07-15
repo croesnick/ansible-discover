@@ -1,2 +1,0 @@
-pytest~=3.4
-pytest-mock~=1.7
