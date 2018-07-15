@@ -15,4 +15,4 @@ click = ">=5"
 "e1839a8" = {path = ".", editable = true}
 
 [requires]
-python_version = ">=3.6"
+python_version = "3.6"
