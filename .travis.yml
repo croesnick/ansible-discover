@@ -13,7 +13,7 @@ install: "make"
 
 script:
   - make test-readme
-  - make ci
+  - make test
 
 cache: pip
 
