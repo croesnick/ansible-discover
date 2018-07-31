@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - CLI routes for playbook successors and predecessors
+- Enable piping of file names to build dependencies for in addition to argument style
 
 ## [0.1.0] - 2018-04-09
 
