@@ -107,14 +107,14 @@ def playbooks():
 
 
 @playbooks.command('successors')
-@click.argument('entities', type=click.Path(exists=True), nargs=-1)
+@click.argument('entities', type=click.Path(exists=True), callback=read_entities_from_stdin, nargs=-1)
 @click.option('--limit', '-l', type=click.Choice(['direct', 'leafs', 'all']), default='all')
 def playbooks_successors(entities: List[str], limit: str):
     _print_successors(entities, limit, 'playbook', (lambda n: n.successors))
 
 
 @playbooks.command('predecessors')
-@click.argument('entities', type=click.Path(exists=True), nargs=-1)
+@click.argument('entities', type=click.Path(exists=True), callback=read_entities_from_stdin, nargs=-1)
 @click.option('--limit', '-l', type=click.Choice(['direct', 'leafs', 'all']), default='all')
 def playbooks_successors(entities: List[str], limit: str):
     _print_successors(entities, limit, 'playbook', (lambda n: n.predecessors))
