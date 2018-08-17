@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - CLI routes for playbook successors and predecessors
 - Enable piping of file names to build dependencies for in addition to argument style
 
+### Fixed
+
+- Handle yaml tags like "!vault | ..." instead of exiting with an exception
+
 ## [0.1.0] - 2018-04-09
 
 ### Added
