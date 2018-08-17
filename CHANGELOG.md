@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.1.1] - 2018-08-17
+
 ### Added
 
 - Enable piping of file names to build dependencies for in addition to argument style
+
+### Fixed
+
+- No more `ansiblediscover.* is not a package` errors by adding `__init__.py` files
 
 ## [0.1.0] - 2018-04-09
 
@@ -48,7 +54,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - CLI with basic functionality for gathering dependencies and dependants for roles
 - Dependency traversal for task includes in roles
 
-[Unreleased]: https://github.com/croesnick/ansible-discover/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/croesnick/ansible-discover/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/croesnick/ansible-discover/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/croesnick/ansible-discover/compare/v0.0.2...v0.1.0
 [0.0.2]: https://github.com/croesnick/ansible-discover/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/croesnick/ansible-discover/compare/v0.0.1

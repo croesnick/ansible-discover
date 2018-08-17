@@ -3,7 +3,7 @@
 
 from setuptools import find_packages, setup
 
-version = '0.1.0'
+version = '0.1.1'
 
 with open('README.rst', encoding='utf-8') as file:
     long_description = file.read()
