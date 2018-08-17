@@ -20,6 +20,20 @@ from ansiblediscover.cli import cli
     ('roles', 'predecessors', ['roles/r0'], []),
     ('roles', 'predecessors', ['roles/r1'], ['r0']),
     ('roles', 'predecessors', ['roles/r6'], ['r0', 'r2']),
+    ('playbooks', 'successors', ['p0.yml'], ['p2']),
+    ('playbooks', 'successors', ['p1.yml'], ['p2']),
+    ('playbooks', 'successors', ['p2.yml'], []),
+    ('playbooks', 'successors', ['roles/r0'], []),
+    ('playbooks', 'predecessors', ['p0.yml'], []),
+    ('playbooks', 'predecessors', ['p1.yml'], []),
+    ('playbooks', 'predecessors', ['p2.yml'], ['p0', 'p1']),
+    ('playbooks', 'predecessors', ['roles/r0'], ['p0', 'p1', 'p2']),
+    ('playbooks', 'predecessors', ['roles/r1'], ['p0', 'p1', 'p2']),
+    ('playbooks', 'predecessors', ['roles/r2'], ['p0', 'p1', 'p2']),
+    ('playbooks', 'predecessors', ['roles/r3'], ['p0']),
+    ('playbooks', 'predecessors', ['roles/r4'], []),  # GH-9 Missing playbooks due to unhandled task includes: p1
+    ('playbooks', 'predecessors', ['roles/r5'], []),  # GH-9 Missing playbooks due to unhandled task includes: p1
+    ('playbooks', 'predecessors', ['roles/r6'], ['p0', 'p1', 'p2']),
 ])
 def test_cli_role_successors(pb_or_role, succ_or_pred, files, expected_output):
     current_dir = os.path.dirname(__file__)

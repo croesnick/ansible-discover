@@ -3,7 +3,7 @@
 
 from setuptools import find_packages, setup
 
-version = '0.1.0'
+version = '0.2.0'
 
 with open('README.rst', encoding='utf-8') as file:
     long_description = file.read()
@@ -20,12 +20,13 @@ setup(
     download_url='https://github.com/croesnick/ansible-discover/archive/v{}.tar.gz'.format(version),
     license='MIT',
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 3 - Alpha',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Build Tools',
         'Topic :: Software Development :: Testing',
         'Topic :: Utilities',
@@ -35,7 +36,7 @@ setup(
         'click~=6.7',
         'ruamel.yaml~=0.15',
     ],
-    python_requires='~=3.6',
+    python_requires='>=3.6',
     tests_require=[
         'pytest~=3.4',
         'pytest-cov~=2.5',
