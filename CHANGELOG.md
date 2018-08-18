@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.1] - 2018-08-18
+
+### Fixed
+
+- Package `ruamel.yaml` in version 0.15.59 did print several `ver (1,2)` when loading yaml, affecting the output of `ansible-discover` in a bad way.
+  Until I find the underlying reason, I'll stick with a working version of `ruamel.yaml`.
+
 ## [0.2.0] - 2018-08-17
 
 ### Added
@@ -64,7 +71,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - CLI with basic functionality for gathering dependencies and dependants for roles
 - Dependency traversal for task includes in roles
 
-[Unreleased]: https://github.com/croesnick/ansible-discover/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/croesnick/ansible-discover/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/croesnick/ansible-discover/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/croesnick/ansible-discover/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/croesnick/ansible-discover/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/croesnick/ansible-discover/compare/v0.0.2...v0.1.0

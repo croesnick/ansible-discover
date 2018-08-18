@@ -3,7 +3,7 @@
 
 from setuptools import find_packages, setup
 
-version = '0.2.0'
+version = '0.2.1'
 
 with open('README.rst', encoding='utf-8') as file:
     long_description = file.read()
@@ -34,7 +34,9 @@ setup(
     install_requires=[
         'PyYAML~=3.12',
         'click~=6.7',
-        'ruamel.yaml~=0.15',
+        # 0.15.59 did not work for me as it did print several 'ver (1,2)' when loading yaml
+        # Until I find the underlying reason, I'll stick with a working version of ruamel.yaml
+        'ruamel.yaml<=0.15.37',
     ],
     python_requires='>=3.6',
     tests_require=[
